@@ -242,6 +242,53 @@ Dependencias de Librerias:
       return r;
     };
 
+    /*
+        Inserta un CSS en el head.
+        @param archivo  Url del archivo
+        @param id   (opcional) Id del archivo
+    */
+
+
+    util.insertaCss = function(archivo, id) {
+      var head, link;
+      if (document !== null) {
+        head = document.getElementsByTagName('head')[0];
+        link = document.createElement('link');
+        link.rel = 'stylesheet';
+        if (id !== null) {
+          link.id = id;
+        }
+        link.type = 'text/css';
+        link.href = archivo;
+        link.media = 'screen';
+        head.appendChild(link);
+      }
+      return true;
+    };
+
+    /*
+        Inserta un js al final dentro del body o bien en un contenedor definido.
+        @param archivo  Url del archivo.
+        @param cn   (opcional) Id del contenedor en el que se pondrá el js.
+        @param id   (opcional) Id del archivo
+    */
+
+
+    util.insertaJs = function(archivo, cn, id) {
+      var contenedor, script;
+      if (document !== null) {
+        contenedor = cn !== null || cn.length > 0 ? document.body : document.getElementById(cn);
+        script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = archivo;
+        if (id !== null) {
+          script.id = id;
+        }
+        contenedor.appendChild(script);
+      }
+      return true;
+    };
+
     return util;
 
   })();

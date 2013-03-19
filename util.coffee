@@ -151,3 +151,35 @@ class @util
             r.push m[1]
         r
 
+    ###
+    Inserta un CSS en el head.
+    @param archivo  Url del archivo
+    @param id   (opcional) Id del archivo
+    ###
+    @insertaCss: (archivo, id) ->
+        if document isnt null
+            head = document.getElementsByTagName('head')[0]
+            link = document.createElement('link')
+            link.rel  = 'stylesheet'
+            link.id = id if id isnt null
+            link.type = 'text/css'
+            link.href = archivo
+            link.media = 'screen'
+            head.appendChild link
+        true
+
+    ###
+    Inserta un js al final dentro del body o bien en un contenedor definido.
+    @param archivo  Url del archivo.
+    @param cn   (opcional) Id del contenedor en el que se pondrá el js.
+    @param id   (opcional) Id del archivo
+    ###
+    @insertaJs: (archivo, cn, id) ->
+        if document isnt null
+            contenedor = if cn isnt null or cn.length  > 0 then document.body else document.getElementById cn
+            script = document.createElement('script')
+            script.type = 'text/javascript'
+            script.src = archivo
+            script.id = id if id isnt null
+            contenedor.appendChild script
+        true
