@@ -7,7 +7,7 @@ Dependencias de Librerias:
     jGrowl
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
-@version 1.01.01
+@version 1.01.02
 */
 
 
@@ -48,7 +48,7 @@ Dependencias de Librerias:
 
 
     util.isNull = function(obj) {
-      return obj === null || !obj;
+      return typeof obj === 'undefined' || obj === null || !obj;
     };
 
     /*
@@ -189,12 +189,11 @@ Dependencias de Librerias:
     util.agregaDigito = function(valor) {
       var digitos;
       digitos = 2;
-      valor = !this.isNullOrEmpty(valor) ? valor : '';
+      valor = !this.isNullOrEmpty(valor) ? '' + valor : '';
       if (digitos > valor.length) {
-        return '0' + valor;
-      } else {
-        return valor;
+        valor = '0' + valor;
       }
+      return valor;
     };
 
     /*

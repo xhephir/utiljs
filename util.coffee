@@ -5,7 +5,7 @@ Dependencias de Librerias:
     jGrowl
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
-@version 1.01.01
+@version 1.01.02
 ###
 class @util
     ###
@@ -28,7 +28,7 @@ class @util
     @return      Devuelve true si es nulo o false en caso contrario
     ###
     @isNull: (obj) ->
-        obj is null or not obj
+        typeof obj is 'undefined' or obj is null or not obj
     ###
     Verifica si una cadena es nula o está vacía
     @param str   Cadena.
@@ -117,11 +117,10 @@ class @util
     ###
     @agregaDigito: (valor) ->
         digitos = 2
-        valor = if not this.isNullOrEmpty(valor) then valor else ''
+        valor = if not this.isNullOrEmpty(valor) then ''+valor else ''
         if digitos > valor.length
-            '0' + valor
-        else
-            valor
+            valor = '0' + valor
+        valor
     ###
     Crea una mensaje de diálogo para eliminar.
     @param mensaje    Mensaje del cuadro de diálogo.
