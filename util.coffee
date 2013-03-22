@@ -28,7 +28,7 @@ class @util
     @return      Devuelve true si es nulo o false en caso contrario
     ###
     @isNull: (obj) ->
-        typeof obj is 'undefined' or obj is null or not obj
+        typeof obj is 'undefined' or obj is null or not obj or obj is 'null'
     ###
     Verifica si una cadena es nula o está vacía
     @param str   Cadena.
@@ -182,3 +182,14 @@ class @util
             script.id = id if id isnt null
             contenedor.appendChild script
         true
+
+    ###
+    Convierte una cadena fecha de JSON en string en formato dd/mm/yyyy
+    @param valor   Fecha en string.
+    @return Fecha en string.
+    ###
+    @convierteFechaJson: (valor) ->
+        fecha = new Date(parseInt(valor.substr(6)))
+        mes = this.agregaDigito(fecha.getMonth()+1)
+        return this.agregaDigito(fecha.getDate()) + '/' +  mes + '/' + fecha.getFullYear()
+

@@ -48,7 +48,7 @@ Dependencias de Librerias:
 
 
     util.isNull = function(obj) {
-      return typeof obj === 'undefined' || obj === null || !obj;
+      return typeof obj === 'undefined' || obj === null || !obj || obj === 'null';
     };
 
     /*
@@ -286,6 +286,20 @@ Dependencias de Librerias:
         contenedor.appendChild(script);
       }
       return true;
+    };
+
+    /*
+        Convierte una cadena fecha de JSON en string en formato dd/mm/yyyy
+        @param valor   Fecha en string.
+        @return Fecha en string.
+    */
+
+
+    util.convierteFechaJson = function(valor) {
+      var fecha, mes;
+      fecha = new Date(parseInt(valor.substr(6)));
+      mes = this.agregaDigito(fecha.getMonth() + 1);
+      return this.agregaDigito(fecha.getDate()) + '/' + mes + '/' + fecha.getFullYear();
     };
 
     return util;
