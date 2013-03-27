@@ -5,6 +5,7 @@ Clase de utilerias.
 Dependencias de Librerias:
     jQuery
     jGrowl
+    BlockUI
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
 @version 1.01.02
@@ -97,9 +98,9 @@ Dependencias de Librerias:
     };
 
     /*
-        Muestra bloqueo de un elemento con una imagen de cargando.
+        Muestra bloqueo de un elemento con una imagen de cargando. (Requiere de BlockUI)
         @param elem     selector en donde se agregará la imagen.
-        @àram msg       Mensaje a presentar
+        @param msg       Mensaje a presentar
     */
 
 
@@ -300,6 +301,26 @@ Dependencias de Librerias:
       fecha = new Date(parseInt(valor.substr(6)));
       mes = this.agregaDigito(fecha.getMonth() + 1);
       return this.agregaDigito(fecha.getDate()) + '/' + mes + '/' + fecha.getFullYear();
+    };
+
+    /*
+        Agrega separadores de miles, etc a los números.
+        @param num  Número
+        @return Número formateado.
+    */
+
+
+    util.formatoNumero = function(num) {
+      var rgx, x, x1, x2;
+      num += '';
+      x = num.split('.');
+      x1 = x[0];
+      x2 = x.length > 1 ? '.' + x[1] : '';
+      rgx = /(\d+)(\d{3})/;
+      while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+      }
+      return x1 + x2;
     };
 
     return util;

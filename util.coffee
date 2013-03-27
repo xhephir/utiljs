@@ -3,6 +3,7 @@ Clase de utilerias.
 Dependencias de Librerias:
     jQuery
     jGrowl
+    BlockUI
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
 @version 1.01.02
@@ -59,9 +60,9 @@ class @util
                 header: if this.isNullOrEmpty(cabecera) then "INFO" else cabecera
                 theme: if this.isNull(error) or not error then 'GrowlExito' else 'GrowlError'
     ###
-    Muestra bloqueo de un elemento con una imagen de cargando.
+    Muestra bloqueo de un elemento con una imagen de cargando. (Requiere de BlockUI)
     @param elem     selector en donde se agregará la imagen.
-    @àram msg       Mensaje a presentar
+    @param msg       Mensaje a presentar
     ###
     @bloqueo: (elem, msg) ->
         $(elem).block message: '<img src="img/ajax-loader.gif" title="." alt="." /> ' + (msg || "Cargando...")
@@ -192,4 +193,21 @@ class @util
         fecha = new Date(parseInt(valor.substr(6)))
         mes = this.agregaDigito(fecha.getMonth()+1)
         return this.agregaDigito(fecha.getDate()) + '/' +  mes + '/' + fecha.getFullYear()
+
+    ###
+    Agrega separadores de miles, etc a los números.
+    @param num  Número
+    @return Número formateado.
+    ###
+    @formatoNumero: (num) ->
+        num += ''
+        x = num.split('.')
+        x1 = x[0]
+        x2 = if x.length > 1 then '.' + x[1] else ''
+        rgx = /(\d+)(\d{3})/
+        while rgx.test(x1)
+            x1 = x1.replace(rgx, '$1' + ',' + '$2')
+
+        x1 + x2
+
 
