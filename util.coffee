@@ -6,7 +6,7 @@ Dependencias de Librerias:
     BlockUI
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
-@version 1.01.02
+@version 1.02.01
 ###
 class @util
     ###
@@ -220,10 +220,10 @@ class @util
         objBase = objBase || {}
         objSecundario = objSecundario || {}
         for prop of objSecundario
-            if typeof source[prop] is 'object'
-                objBase[prop] = extend objBase[prop], source[prop]
+            if typeof objSecundario[prop] is 'object'
+                objBase[prop] = extend objBase[prop], objSecundario[prop]
             else
-                objBase[prop] = source[prop]
+                objBase[prop] = objSecundario[prop]
         objBase
 
 

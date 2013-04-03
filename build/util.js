@@ -8,7 +8,7 @@ Dependencias de Librerias:
     BlockUI
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
-@version 1.01.02
+@version 1.02.01
 */
 
 
@@ -336,10 +336,10 @@ Dependencias de Librerias:
       objBase = objBase || {};
       objSecundario = objSecundario || {};
       for (prop in objSecundario) {
-        if (typeof source[prop] === 'object') {
-          objBase[prop] = extend(objBase[prop], source[prop]);
+        if (typeof objSecundario[prop] === 'object') {
+          objBase[prop] = extend(objBase[prop], objSecundario[prop]);
         } else {
-          objBase[prop] = source[prop];
+          objBase[prop] = objSecundario[prop];
         }
       }
       return objBase;
