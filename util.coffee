@@ -15,7 +15,7 @@ class @util
     @return      Valor boleano true o false.
     ###
     @cadenaABool: (str) ->
-        if not this.isNull str
+        if not @isNull str
             switch str.toString().toLowerCase()
                 when 'true', '1'
                     return true
@@ -36,7 +36,7 @@ class @util
     @return      Devuelve true si es nulo o false en caso contrario
     ###
     @isNullOrEmpty: (str) ->
-        this.isNull(str) or str.length is 0
+        @isNull(str) or str.length is 0
     ###
     Remplaza la subcadena {n} donde n>=0 apartir del arreglo de cadenas especificado
     @param str   Cadena que contiene los elementos a reemplazar.
@@ -44,7 +44,7 @@ class @util
     @return  Devuelve la cadena con los reemplazos correspondientes. Devuelve la cadena original si ésta es vacía o no existen elementos que reemplazar.
     ###
     @ponerStr: (str, arr) ->
-        if not this.isNullOrEmpty(str) and not this.isNull(arr) and arr.length > 0
+        if not @isNullOrEmpty(str) and not @isNull(arr) and arr.length > 0
             for i in [0..arr.length]
                 regExp = new RegExp("\\{" + i + "\\}", "g")
                 str = str.replace(regExp, arr[i])
@@ -57,8 +57,8 @@ class @util
     ###
     @msg: (mensaje, error, cabecera) ->
         $.jGrowl mensaje,
-                header: if this.isNullOrEmpty(cabecera) then "INFO" else cabecera
-                theme: if this.isNull(error) or not error then 'GrowlExito' else 'GrowlError'
+                header: if @isNullOrEmpty(cabecera) then "INFO" else cabecera
+                theme: if @isNull(error) or not error then 'GrowlExito' else 'GrowlError'
     ###
     Muestra bloqueo de un elemento con una imagen de cargando. (Requiere de BlockUI)
     @param elem     selector en donde se agregará la imagen.
@@ -78,7 +78,7 @@ class @util
     @param formato Formato.
     ###
     @fecha: (strFecha, formato) ->
-        if this.isNullOrEmpty strFecha
+        if @isNullOrEmpty strFecha
             return null
         try
             $.datepicker.parseDate(formato, strFecha)
@@ -92,10 +92,10 @@ class @util
     @tryParseInt: (val, pValor) ->
         try
             res = pValor
-            if isNaN(res) or this.isNullOrEmpty(res)
+            if isNaN(res) or @isNullOrEmpty(res)
                 res = 0
 
-            if not isNaN(val) and not this.isNullOrEmpty(val)
+            if not isNaN(val) and not @isNullOrEmpty(val)
                 res = parseInt(val, 10)
 
             if not isNaN(res) then res else pValor
@@ -118,7 +118,7 @@ class @util
     ###
     @agregaDigito: (valor) ->
         digitos = 2
-        valor = if not this.isNullOrEmpty(valor) then ''+valor else ''
+        valor = if not @isNullOrEmpty(valor) then ''+valor else ''
         if digitos > valor.length
             valor = '0' + valor
         valor
@@ -130,7 +130,7 @@ class @util
     @param datos      Parámetros extra que recibirá el Callback como argumento.
     ###
     @dialogEliminar: (mensaje, titulo, callback, datos) ->
-        cn = this.ponerStr '<div id="cnDialogo" title="{0}">{1}</div>',
+        cn = @ponerStr '<div id="cnDialogo" title="{0}">{1}</div>',
                            [titulo, mensaje]
         $(cn).dialog {resizable: false, modal: true, buttons:
             'Eliminar': () ->
@@ -191,8 +191,8 @@ class @util
     ###
     @convierteFechaJson: (valor) ->
         fecha = new Date(parseInt(valor.substr(6)))
-        mes = this.agregaDigito(fecha.getMonth()+1)
-        return this.agregaDigito(fecha.getDate()) + '/' +  mes + '/' + fecha.getFullYear()
+        mes = @agregaDigito(fecha.getMonth()+1)
+        return @agregaDigito(fecha.getDate()) + '/' +  mes + '/' + fecha.getFullYear()
 
     ###
     Agrega separadores de miles, etc a los números.
@@ -233,7 +233,7 @@ class @util
     @param clase    Nombre de la clase a busscar
     @return true si la encontró, de lo contrario false.
     ###
-    hasClass = (el, clase) ->
+    @hasClass = (el, clase) ->
             new RegExp('(\\s|^)'+clase+'(\\s|$)').test(el.className)
 
     ###
@@ -242,8 +242,8 @@ class @util
     @param clase    Nombre de la clase a agregar
     @return true si la encontró, de lo contrario false.
     ###
-    addClass = (el, clase)->
-        if not hasClass(el, clase)
+    @addClass = (el, clase)->
+        if not @hasClass(el, clase)
             el.className += (if el.className then ' ' else '') + clase
     
     ###
@@ -252,6 +252,6 @@ class @util
     @param clase    Nombre de la clase a quitar
     @return true si la encontró, de lo contrario false.
     ###
-    removeClass = (el, clase) ->
-        if hasClass(el, clase)
+    @removeClass = (el, clase) ->
+        if @hasClass(el, clase)
             el.className = el.className.replace(new RegExp('(\\s|^)'+clase+'(\\s|$)'),' ').replace(/^\s+|\s+$/g, '')

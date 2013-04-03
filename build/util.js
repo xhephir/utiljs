@@ -15,7 +15,6 @@ Dependencias de Librerias:
 (function() {
 
   this.util = (function() {
-    var addClass, hasClass, removeClass;
 
     function util() {}
 
@@ -354,7 +353,7 @@ Dependencias de Librerias:
     */
 
 
-    hasClass = function(el, clase) {
+    util.hasClass = function(el, clase) {
       return new RegExp('(\\s|^)' + clase + '(\\s|$)').test(el.className);
     };
 
@@ -366,8 +365,8 @@ Dependencias de Librerias:
     */
 
 
-    addClass = function(el, clase) {
-      if (!hasClass(el, clase)) {
+    util.addClass = function(el, clase) {
+      if (!this.hasClass(el, clase)) {
         return el.className += (el.className ? ' ' : '') + clase;
       }
     };
@@ -380,8 +379,8 @@ Dependencias de Librerias:
     */
 
 
-    removeClass = function(el, clase) {
-      if (hasClass(el, clase)) {
+    util.removeClass = function(el, clase) {
+      if (this.hasClass(el, clase)) {
         return el.className = el.className.replace(new RegExp('(\\s|^)' + clase + '(\\s|$)'), ' ').replace(/^\s+|\s+$/g, '');
       }
     };
