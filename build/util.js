@@ -15,6 +15,7 @@ Dependencias de Librerias:
 (function() {
 
   this.util = (function() {
+    var addClass, hasClass, removeClass;
 
     function util() {}
 
@@ -321,6 +322,68 @@ Dependencias de Librerias:
         x1 = x1.replace(rgx, '$1' + ',' + '$2');
       }
       return x1 + x2;
+    };
+
+    /*
+        Extiende las propiedades de un objeto simple.
+        @param objBase          Objecto base.
+        @param objSecundario    Objecto secundario.
+        @return Objeto original extendido.
+    */
+
+
+    util.extend = function(objBase, objSecundario) {
+      var prop;
+      objBase = objBase || {};
+      objSecundario = objSecundario || {};
+      for (prop in objSecundario) {
+        if (typeof source[prop] === 'object') {
+          objBase[prop] = extend(objBase[prop], source[prop]);
+        } else {
+          objBase[prop] = source[prop];
+        }
+      }
+      return objBase;
+    };
+
+    /*
+        Verifica si un elemento tiene una clase
+        @param el       Elemento html
+        @param clase    Nombre de la clase a busscar
+        @return true si la encontró, de lo contrario false.
+    */
+
+
+    hasClass = function(el, clase) {
+      return new RegExp('(\\s|^)' + clase + '(\\s|$)').test(el.className);
+    };
+
+    /*
+        Agrega una clase al elemento html
+        @param el       Elemento html
+        @param clase    Nombre de la clase a agregar
+        @return true si la encontró, de lo contrario false.
+    */
+
+
+    addClass = function(el, clase) {
+      if (!hasClass(el, clase)) {
+        return el.className += (el.className ? ' ' : '') + clase;
+      }
+    };
+
+    /*
+        Quita una clase al elemento html
+        @param el       Elemento html
+        @param clase    Nombre de la clase a quitar
+        @return true si la encontró, de lo contrario false.
+    */
+
+
+    removeClass = function(el, clase) {
+      if (hasClass(el, clase)) {
+        return el.className = el.className.replace(new RegExp('(\\s|^)' + clase + '(\\s|$)'), ' ').replace(/^\s+|\s+$/g, '');
+      }
     };
 
     return util;
