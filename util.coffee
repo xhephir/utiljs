@@ -216,7 +216,7 @@ class @util
     @param objSecundario    Objecto secundario.
     @return Objeto original extendido.
     ###
-    @extend = (objBase, objSecundario) ->
+    @extend: (objBase, objSecundario) ->
         objBase = objBase || {}
         objSecundario = objSecundario || {}
         for prop of objSecundario
@@ -233,7 +233,7 @@ class @util
     @param clase    Nombre de la clase a busscar
     @return true si la encontró, de lo contrario false.
     ###
-    @hasClass = (el, clase) ->
+    @hasClass: (el, clase) ->
             new RegExp('(\\s|^)'+clase+'(\\s|$)').test(el.className)
 
     ###
@@ -242,16 +242,16 @@ class @util
     @param clase    Nombre de la clase a agregar
     @return true si la encontró, de lo contrario false.
     ###
-    @addClass = (el, clase)->
+    @addClass: (el, clase)->
         if not @hasClass(el, clase)
             el.className += (if el.className then ' ' else '') + clase
-    
+
     ###
     Quita una clase al elemento html
     @param el       Elemento html
     @param clase    Nombre de la clase a quitar
     @return true si la encontró, de lo contrario false.
     ###
-    @removeClass = (el, clase) ->
+    @removeClass: (el, clase) ->
         if @hasClass(el, clase)
             el.className = el.className.replace(new RegExp('(\\s|^)'+clase+'(\\s|$)'),' ').replace(/^\s+|\s+$/g, '')
