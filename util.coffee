@@ -212,19 +212,23 @@ class @util
 
     ###
     Extiende las propiedades de un objeto simple.
-    @param objBase          Objecto base.
+    @param defaults         Objecto base.
     @param objSecundario    Objecto secundario.
     @return Objeto original extendido.
     ###
-    @extend: (objBase, objSecundario) ->
-        objBase = objBase || {}
+    @extend: (defaults, objSecundario) ->
+        defaults = defaults || {}
         objSecundario = objSecundario || {}
+        
+        #Si el objSecundario es una instancia de un Array y no tiene elementos, lo asignamos
+        defaults = objSecundario if objSecundario instanceof Array and objSecundario.length is 0
+
         for prop of objSecundario
             if typeof objSecundario[prop] is 'object'
-                objBase[prop] = extend objBase[prop], objSecundario[prop]
+                defaults[prop] = @extend defaults[prop], objSecundario[prop]
             else
-                objBase[prop] = objSecundario[prop]
-        objBase
+                defaults[prop] = objSecundario[prop]
+        defaults
 
 
     ###
