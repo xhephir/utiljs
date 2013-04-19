@@ -6,7 +6,7 @@ Dependencias de Librerias:
     BlockUI
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
-@version 1.02.01
+@version 1.02.02
 ###
 class @util
     ###
