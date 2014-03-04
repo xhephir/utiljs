@@ -6,7 +6,7 @@ Dependencias de Librerias:
     BlockUI
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
-@version 1.02.02
+@version 1.03.02
 ###
 class @util
     ###
@@ -259,3 +259,18 @@ class @util
     @removeClass: (el, clase) ->
         if @hasClass(el, clase)
             el.className = el.className.replace(new RegExp('(\\s|^)'+clase+'(\\s|$)'),' ').replace(/^\s+|\s+$/g, '')
+
+    ###
+    Convierte los caracteres especiales de una cadena a su correspondiente Ascii
+    @param str      Cadena que contiene el texto
+    @return Cadena ya convertida.
+    ###
+    @htmlEncode: (str) ->
+        i = str.length
+        aRet = []
+
+        while i--
+            iC = str[i].charCodeAt()
+            aRet[i] = if iC < 65 or iC > 127 or (iC>90 and iC<97) then '&#'+iC+';' else str[i]
+        aRet.join('') 
+    
