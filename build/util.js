@@ -103,7 +103,7 @@ Dependencias de Librerias:
 
     util.bloqueo = function(elem, msg) {
       return $(elem).block({
-        message: '<img src="img/ajax-loader.gif" title="." alt="." /> ' + (msg || "Cargando...")
+        message: '<img src="include/ajax-loader.gif" title="." alt="." /> ' + (msg || "Cargando...")
       });
     };
 
@@ -184,17 +184,17 @@ Dependencias de Librerias:
 
 
     /*
-    Agrega un dígito a la izquierda cuando sólo es un dígito.
-    @param valor   Valor.
-    @return        Devuelve la cadena con 2 dígitos.
+    Agrega ceros a la izquierda de un número.
+    @param valor    Valor.
+    @param digitos  Número de digitos que tendrá el número incluyendo los ceros.
+    @return        Devuelve la cadena.
      */
 
-    util.agregaDigito = function(valor) {
-      var digitos;
-      digitos = 2;
-      valor = !this.isNullOrEmpty(valor) ? '' + valor : '';
-      if (digitos > valor.length) {
-        valor = '0' + valor;
+    util.agregaDigito = function(valor, digitos) {
+      digitos = digitos || 2;
+      valor = '' + valor;
+      while (digitos > valor.length) {
+        valor += '0' + valor;
       }
       return valor;
     };
@@ -309,11 +309,14 @@ Dependencias de Librerias:
     /*
     Agrega separadores de miles, etc a los números.
     @param num  Número
+    @param sinDecimales True si no desean agregar decimales
     @return Número formateado.
      */
 
-    util.formatoNumero = function(num) {
+    util.formatoNumero = function(num, sinDecimales) {
       var rgx, x, x1, x2;
+      sinDecimales = sinDecimales || false;
+      num = sinDecimales ? parseInt(num) : parseFloat(num).toFixed(2);
       num += '';
       x = num.split('.');
       x1 = x[0];
@@ -406,6 +409,20 @@ Dependencias de Librerias:
         aRet[i] = iC < 65 || iC > 127 || (iC > 90 && iC < 97) ? '&#' + iC + ';' : str[i];
       }
       return aRet.join('');
+    };
+
+
+    /*
+    Genera un GUID simple
+    @return GUID de 4 caracteres.
+     */
+
+    util.simpleGuid = function() {
+      var S4;
+      S4 = function() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+      };
+      return (S4()).toString();
     };
 
     return util;

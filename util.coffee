@@ -65,7 +65,7 @@ class @util
     @param msg       Mensaje a presentar
     ###
     @bloqueo: (elem, msg) ->
-        $(elem).block message: '<img src="img/ajax-loader.gif" title="." alt="." /> ' + (msg || "Cargando...")
+        $(elem).block message: '<img src="include/ajax-loader.gif" title="." alt="." /> ' + (msg || "Cargando...")
     ###
     Quita el bloqueo
     @param elem     selector en donde se quitará el bloqueo.
@@ -112,15 +112,16 @@ class @util
         catch e
             false
     ###
-    Agrega un dígito a la izquierda cuando sólo es un dígito.
-    @param valor   Valor.
-    @return        Devuelve la cadena con 2 dígitos.
+    Agrega ceros a la izquierda de un número.
+    @param valor    Valor.
+    @param digitos  Número de digitos que tendrá el número incluyendo los ceros.
+    @return        Devuelve la cadena.
     ###
-    @agregaDigito: (valor) ->
-        digitos = 2
-        valor = if not @isNullOrEmpty(valor) then ''+valor else ''
-        if digitos > valor.length
-            valor = '0' + valor
+    @agregaDigito: (valor, digitos) ->
+        digitos = digitos || 2
+        valor = '' + valor
+        while digitos > valor.length
+            valor += '0' + valor
         valor
     ###
     Crea una mensaje de diálogo para eliminar.
@@ -197,9 +198,12 @@ class @util
     ###
     Agrega separadores de miles, etc a los números.
     @param num  Número
+    @param sinDecimales True si no desean agregar decimales
     @return Número formateado.
     ###
-    @formatoNumero: (num) ->
+    @formatoNumero: (num, sinDecimales) ->
+        sinDecimales = sinDecimales || false
+        num = if sinDecimales then parseInt(num) else parseFloat(num).toFixed(2)
         num += ''
         x = num.split('.')
         x1 = x[0]
@@ -274,3 +278,13 @@ class @util
             aRet[i] = if iC < 65 or iC > 127 or (iC>90 and iC<97) then '&#'+iC+';' else str[i]
         aRet.join('') 
     
+
+    ###
+    Genera un GUID simple
+    @return GUID de 4 caracteres.
+    ###
+    @simpleGuid: () ->
+        S4 = () ->
+            (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+        (S4()).toString()
+
