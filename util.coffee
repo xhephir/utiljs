@@ -6,7 +6,7 @@ Dependencias de Librerias:
     BlockUI
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
-@version 1.03.02
+@version 1.03.04
 ###
 class @util
     ###
@@ -62,10 +62,12 @@ class @util
     ###
     Muestra bloqueo de un elemento con una imagen de cargando. (Requiere de BlockUI)
     @param elem     selector en donde se agregará la imagen.
-    @param msg       Mensaje a presentar
+    @param msg      (Opcional) Mensaje a presentar
+    @param rutaImg  (Opcional) Ruta de la imagen de carga. De manera predeterminada es img/ajax-loader.gif
     ###
-    @bloqueo: (elem, msg) ->
-        $(elem).block message: '<img src="include/ajax-loader.gif" title="." alt="." /> ' + (msg || "Cargando...")
+    @bloqueo: (elem, msg, rutaImg) ->
+        rutaImg = rutaImg or'Content/img/ajax-loader.gif'
+        $(elem).block message: '<img src="' + rutaImg + '" title="." alt="." /> ' + (msg || "Cargando...")
     ###
     Quita el bloqueo
     @param elem     selector en donde se quitará el bloqueo.
@@ -114,14 +116,20 @@ class @util
     ###
     Agrega ceros a la izquierda de un número.
     @param valor    Valor.
-    @param digitos  Número de digitos que tendrá el número incluyendo los ceros.
+    @param digitos  (Opcional) Número de digitos que tendrá el número incluyendo los ceros.
     @return        Devuelve la cadena.
     ###
     @agregaDigito: (valor, digitos) ->
         digitos = digitos || 2
+
         valor = '' + valor
-        while digitos > valor.length
-            valor += '0' + valor
+        
+        if (valor.length >= digitos)
+            return valor
+
+        max = (digitos - valor.length)
+        while (max--)
+            valor = '0' + valor
         valor
     ###
     Crea una mensaje de diálogo para eliminar.
@@ -197,8 +205,8 @@ class @util
 
     ###
     Agrega separadores de miles, etc a los números.
-    @param num  Número
-    @param sinDecimales True si no desean agregar decimales
+    @param num          Número
+    @param sinDecimales (Opcional) True si no desean agregar decimales
     @return Número formateado.
     ###
     @formatoNumero: (num, sinDecimales) ->
@@ -238,7 +246,7 @@ class @util
     ###
     Verifica si un elemento tiene una clase
     @param el       Elemento html
-    @param clase    Nombre de la clase a busscar
+    @param clase    Nombre de la clase a buscar
     @return true si la encontró, de lo contrario false.
     ###
     @hasClass: (el, clase) ->
@@ -248,7 +256,6 @@ class @util
     Agrega una clase al elemento html
     @param el       Elemento html
     @param clase    Nombre de la clase a agregar
-    @return true si la encontró, de lo contrario false.
     ###
     @addClass: (el, clase)->
         if not @hasClass(el, clase)
@@ -258,7 +265,6 @@ class @util
     Quita una clase al elemento html
     @param el       Elemento html
     @param clase    Nombre de la clase a quitar
-    @return true si la encontró, de lo contrario false.
     ###
     @removeClass: (el, clase) ->
         if @hasClass(el, clase)

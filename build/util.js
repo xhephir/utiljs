@@ -8,7 +8,7 @@ Dependencias de Librerias:
     BlockUI
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
-@version 1.03.02
+@version 1.03.04
  */
 
 (function() {
@@ -98,12 +98,14 @@ Dependencias de Librerias:
     /*
     Muestra bloqueo de un elemento con una imagen de cargando. (Requiere de BlockUI)
     @param elem     selector en donde se agregará la imagen.
-    @param msg       Mensaje a presentar
+    @param msg      (Opcional) Mensaje a presentar
+    @param rutaImg  (Opcional) Ruta de la imagen de carga. De manera predeterminada es img/ajax-loader.gif
      */
 
-    util.bloqueo = function(elem, msg) {
+    util.bloqueo = function(elem, msg, rutaImg) {
+      rutaImg = rutaImg || 'Content/img/ajax-loader.gif';
       return $(elem).block({
-        message: '<img src="include/ajax-loader.gif" title="." alt="." /> ' + (msg || "Cargando...")
+        message: '<img src="' + rutaImg + '" title="." alt="." /> ' + (msg || "Cargando...")
       });
     };
 
@@ -186,15 +188,20 @@ Dependencias de Librerias:
     /*
     Agrega ceros a la izquierda de un número.
     @param valor    Valor.
-    @param digitos  Número de digitos que tendrá el número incluyendo los ceros.
+    @param digitos  (Opcional) Número de digitos que tendrá el número incluyendo los ceros.
     @return        Devuelve la cadena.
      */
 
     util.agregaDigito = function(valor, digitos) {
+      var max;
       digitos = digitos || 2;
       valor = '' + valor;
-      while (digitos > valor.length) {
-        valor += '0' + valor;
+      if (valor.length >= digitos) {
+        return valor;
+      }
+      max = digitos - valor.length;
+      while (max--) {
+        valor = '0' + valor;
       }
       return valor;
     };
@@ -308,8 +315,8 @@ Dependencias de Librerias:
 
     /*
     Agrega separadores de miles, etc a los números.
-    @param num  Número
-    @param sinDecimales True si no desean agregar decimales
+    @param num          Número
+    @param sinDecimales (Opcional) True si no desean agregar decimales
     @return Número formateado.
      */
 
@@ -357,7 +364,7 @@ Dependencias de Librerias:
     /*
     Verifica si un elemento tiene una clase
     @param el       Elemento html
-    @param clase    Nombre de la clase a busscar
+    @param clase    Nombre de la clase a buscar
     @return true si la encontró, de lo contrario false.
      */
 
@@ -370,7 +377,6 @@ Dependencias de Librerias:
     Agrega una clase al elemento html
     @param el       Elemento html
     @param clase    Nombre de la clase a agregar
-    @return true si la encontró, de lo contrario false.
      */
 
     util.addClass = function(el, clase) {
@@ -384,7 +390,6 @@ Dependencias de Librerias:
     Quita una clase al elemento html
     @param el       Elemento html
     @param clase    Nombre de la clase a quitar
-    @return true si la encontró, de lo contrario false.
      */
 
     util.removeClass = function(el, clase) {
