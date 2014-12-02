@@ -6,7 +6,7 @@ Dependencias de Librerias:
     BlockUI
     jQueryUI
 @autor  Carlos Eduardo Fonseca Sandoval. cfonsecasan@gmail.com
-@version 1.03.04
+@version 1.04.11
 ###
 class @util
     ###
@@ -43,11 +43,46 @@ class @util
     @param arr   Arreglo de elementos a reemplazar en la cadena.
     @return  Devuelve la cadena con los reemplazos correspondientes. Devuelve la cadena original si ésta es vacía o no existen elementos que reemplazar.
     ###
-    @ponerStr: (str, arr) ->
+    @ponerStrByArr: (str, arr) ->
         if not @isNullOrEmpty(str) and not @isNull(arr) and arr.length > 0
             for i in [0..arr.length]
                 regExp = new RegExp("\\{" + i + "\\}", "g")
-                str = str.replace(regExp, arr[i])
+                str = str.replace regExp, arr[i]
+        str
+    ###
+    Verifica si un valor es del tipo Array
+    @param value Valor
+    @return Devuelve true si lo es, false en caso contrario
+    ###
+    @typeIsArray: (value) ->
+        value and
+            typeof value is 'object' and
+            value instanceof Array and
+            typeof value.length is 'number' and
+            typeof value.splice is 'function' and
+            not ( value.propertyIsEnumerable 'length' )
+    ###
+    Remplaza la subcadena {n} donde n es el nombre de la propiedad dentro del objeto obj (por ejemplo {foo} y {bar}) o 
+    donde n>=0 apartir del arreglo de cadenas especificado (por ejemplo {0}, {1}).
+    @param str    Cadena que contiene los elementos a reemplazar.
+    @param obj    Arreglo de elementos a reemplazar en la cadena.
+    @param parent (No especificado por el usuario) Indica el nombre del elemento padre que lo contiene, en caso de que el objeto obj sea más complejo.
+        Por ejemplo al querer imprimir un dato como {Alumno.Nombre}
+    @return  Devuelve la cadena con los reemplazos correspondientes. Devuelve la cadena original si ésta es vacía o no existen elementos que reemplazar.
+    ###
+    @ponerStr: (str, obj, parent = '') ->
+        if not @isNullOrEmpty(str) and not @isNull(obj)
+            
+            if @typeIsArray(obj)
+                str = @ponerStrByArr str, obj
+            else if typeof obj is 'object'
+                for key, val of obj
+                    if typeof val is 'object'
+                        str = @ponerStr str, val, (if parent.length > 0 then parent else '') + key + '.'
+                    else
+                        regExp = new RegExp("\\{" + (parent + key) + "\\}", "g")
+                        str = str.replace regExp, val
+            
         str
     ###
     Mensaje informativo por medio del plugin jGrowl.
@@ -195,13 +230,34 @@ class @util
 
     ###
     Convierte una cadena fecha de JSON en string en formato dd/mm/yyyy
-    @param valor   Fecha en string.
+    @param valor      Fecha en string.
+    @param quitarHora Define si se desea quitar la hora (predeterminado) de la fecha.
     @return Fecha en string.
     ###
-    @convierteFechaJson: (valor) ->
+    @convierteFechaJson: (valor, quitarHora = true) ->
         fecha = new Date(parseInt(valor.substr(6)))
         mes = @agregaDigito(fecha.getMonth()+1)
-        return @agregaDigito(fecha.getDate()) + '/' +  mes + '/' + fecha.getFullYear()
+        tiempo = 'AM'
+        hora = 0
+        minutos = 0
+
+        if not quitarHora
+            hora = fecha.getHours()
+            minutos = fecha.getMinutes() + ''
+
+            if (hora >= 12) 
+                tiempo = 'PM'
+
+            if hora > 12
+                hora -= 12
+
+            else if hora == 0
+                hora = 12
+
+            if minutos.length == 1
+                minutos = '0' + minutos
+
+        return @ponerStr '{0}/{1}/{2} {3}', [@agregaDigito(fecha.getDate()), mes, fecha.getFullYear(), if quitarHora then '' else @ponerStr '{0}:{1} {2}', [hora, minutos, tiempo]]
 
     ###
     Agrega separadores de miles, etc a los números.
